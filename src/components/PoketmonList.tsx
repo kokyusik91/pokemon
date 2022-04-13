@@ -1,5 +1,7 @@
 import React from 'react';
 import styled from '@emotion/styled';
+import usePokemon from '../hook/usePoketmon';
+import { ListResponse } from '../types';
 
 const Base = styled.div`
   margin-top: 24px;
@@ -60,15 +62,33 @@ const getImageUrl = (index: number): string =>
   `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${index}.png`;
 
 const PoketmonList: React.FC = () => {
+  // useQuery를 사용해서 API 호출한다.
+  const { isLoading, isError, data } = usePokemon<ListResponse>();
+  console.log(data);
+
+  // index를 받아서 #001 #002 이 형식으로 만들어주는 함수
+  const formatNumbering = (index: number): string => {
+    // padStart뭐임????
+    return `#${String(index).padStart(3, '0')}`;
+  };
+
   return (
     <Base>
-      <List>
-        <ListItem>
-          <Image src={getImageUrl(1)} />
-          <Name>이상해씨</Name>
-          <Index>#0001</Index>
-        </ListItem>
-      </List>
+      {isLoading || isError ? (
+        <LoadingWrapper>
+          <Loading src='/loading.gif' alt='loading' />
+        </LoadingWrapper>
+      ) : (
+        <List>
+          {data?.data.results.map((pokemon, idx) => (
+            <ListItem key={pokemon.name}>
+              <Image src={getImageUrl(idx + 1)} />
+              <Name>{pokemon.name}</Name>
+              <Index>{formatNumbering(idx + 1)}</Index>
+            </ListItem>
+          ))}
+        </List>
+      )}
     </Base>
   );
 };
