@@ -68,3 +68,9 @@ export const mapTypeToHex = (type?: string): string => {
       return '#6B7280';
   }
 };
+
+// index를 받아서 #001 #002 이 형식으로 만들어주는 함수
+export const formatNumbering = (pokemonIndex: number | string): string =>
+  `#${(typeof pokemonIndex === 'number' ? String(pokemonIndex) : pokemonIndex)
+    // padStart 뭐임??
+    .padStart(3, '0')}`;

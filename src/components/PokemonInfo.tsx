@@ -1,13 +1,125 @@
 import React from 'react';
 import styled from '@emotion/styled';
+import { Color, Type } from '../types';
+import { mapColorToHex, mapTypeToHex } from '../utils';
+import { formatNumbering } from '../utils';
 
+// color를 prop으로 받아서 붙여줌
+const Base = styled.div<{ color?: string }>`
+  display: flex;
+  flex-direction: column;
+  background-color: ${({ color }) => color};
+  padding: 20px;
+  border-bottom-left-radius: 20%;
+  border-bottom-right-radius: 20%;
+`;
 
-const Base = styled.div``;
+const ThumbnailImageWrapper = styled.div`
+  width: 160px;
+  margin-inline: auto;
+  margin-block: 24px;
+`;
 
-const PokemonInfo: React.FC = () => {
-  return(
+const ThumbnailImage = styled.img`
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+`;
 
-  )
+const InfoWrapper = styled.div`
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+`;
+
+const Name = styled.div`
+  color: #fff;
+  font-size: 30px;
+  font-weight: bold;
+  text-transform: capitalize;
+`;
+
+const Index = styled.div`
+  color: #fff;
+  font-size: 36px;
+  font-weight: bold;
+  opacity: 0.75;
+`;
+
+// color를 prop으로 받아서 붙여줌
+const TypeWrapper = styled.div<{ color: string }>`
+  background-color: ${({ color }) => color};
+  padding: 4px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+const TypeList = styled.div`
+  display: flex;
+  margin-top: 8px;
+  /* TypeWraper간의 간격을 마진 8px를 줌 */
+  ${TypeWrapper} + ${TypeWrapper} {
+    margin-left: 8px;
+  }
+`;
+
+const TypeInfo = styled.img`
+  height: 12px;
+`;
+
+const ImageWrapper = styled.div`
+  position: absolute;
+  width: 288px;
+  height: 288px;
+  left: -96px;
+  top: -96px;
+  opacity: 0.75;
+`;
+
+const Image = styled.img`
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+`;
+
+// props에 대한 타입 지정
+interface Props {
+  id: string;
+  name?: string;
+  types?: Array<Type>;
+  color?: Color;
+}
+// 상위 컴포넌트에서 id, name, types, color를 props로 받아온다.
+const PokemonInfo: React.FC<Props> = ({ id, name, types, color }) => {
+  return (
+    <Base color={mapColorToHex(color?.name)}>
+      <ImageWrapper>
+        {/* 좌측 상단의 포켓볼 이미지 */}
+        <Image src='/assets/poketball.svg' />
+      </ImageWrapper>
+      <InfoWrapper>
+        <Name>{name}</Name>
+        <Index>{formatNumbering(id)}</Index>
+      </InfoWrapper>
+      <TypeList>
+        {/* types를 prop으로 전달 받아서 map을 돌림 */}
+        {types?.map(({ type }, idx) => (
+          <TypeWrapper key={idx} color={mapTypeToHex(type.name)}>
+            <TypeInfo src={`/assets/${type.name}.svg`} />
+          </TypeWrapper>
+        ))}
+      </TypeList>
+      <ThumbnailImageWrapper>
+        <ThumbnailImage
+          // 포켓몬 이미지
+          src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/dream-world/${id}.svg`}
+          alt='image'
+        />
+      </ThumbnailImageWrapper>
+    </Base>
+  );
 };
 
 export default PokemonInfo;

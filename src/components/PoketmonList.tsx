@@ -2,6 +2,7 @@ import React from 'react';
 import styled from '@emotion/styled';
 import usePokemon from '../hook/usePoketmon';
 import { ListResponse } from '../types';
+import { formatNumbering } from '../utils';
 
 const Base = styled.div`
   margin-top: 24px;
@@ -66,14 +67,9 @@ const PoketmonList: React.FC = () => {
   const { isLoading, isError, data } = usePokemon<ListResponse>();
   console.log(data);
 
-  // index를 받아서 #001 #002 이 형식으로 만들어주는 함수
-  const formatNumbering = (index: number): string => {
-    // padStart뭐임????
-    return `#${String(index).padStart(3, '0')}`;
-  };
-
   return (
     <Base>
+      {/* 로딩중이면 loading gif 보여주기 */}
       {isLoading || isError ? (
         <LoadingWrapper>
           <Loading src='/loading.gif' alt='loading' />
