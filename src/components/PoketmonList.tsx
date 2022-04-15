@@ -3,6 +3,7 @@ import styled from '@emotion/styled';
 import usePokemon from '../hook/usePoketmon';
 import { ListResponse } from '../types';
 import { formatNumbering } from '../utils';
+import { useNavigate } from 'react-router-dom';
 
 const Base = styled.div`
   margin-top: 24px;
@@ -67,6 +68,11 @@ const PoketmonList: React.FC = () => {
   const { isLoading, isError, data } = usePokemon<ListResponse>();
   console.log(data);
 
+  const navigate = useNavigate();
+  const handleClick = (id: number) => {
+    navigate(`/${id}`);
+  };
+
   return (
     <Base>
       {/* 로딩중이면 loading gif 보여주기 */}
@@ -77,7 +83,12 @@ const PoketmonList: React.FC = () => {
       ) : (
         <List>
           {data?.data.results.map((pokemon, idx) => (
-            <ListItem key={pokemon.name}>
+            <ListItem
+              key={pokemon.name}
+              onClick={() => {
+                handleClick(idx + 1);
+              }}
+            >
               <Image src={getImageUrl(idx + 1)} />
               <Name>{pokemon.name}</Name>
               <Index>{formatNumbering(idx + 1)}</Index>

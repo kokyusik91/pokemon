@@ -2,6 +2,7 @@ import React from 'react';
 import styled from '@emotion/styled';
 import { mapColorToHex } from '../utils';
 import { Ability, Color, EffectEntry } from '../types';
+import useAbilitiesQuery from '../hook/useAbilities';
 
 const Base = styled.div`
   margin-top: 32px;
@@ -17,15 +18,13 @@ const Title = styled.h4<{ color: string }>`
 
 const ListItem = styled.li`
   display: flex;
+  margin-bottom: 12px;
 `;
 
 const List = styled.ul`
   margin: 20px 0 0 0;
   padding: 0;
   list-style: none;
-  ${ListItem} + ${ListItem} {
-    margin-top: 12px;
-  }
 `;
 
 const Label = styled.span`
@@ -49,15 +48,22 @@ interface Props {
   abilities: Array<Ability>;
 }
 
-const Abilities: React.FC<Props> = ({ color }) => {
+const Abilities: React.FC<Props> = ({ color, abilities }) => {
+  const results = useAbilitiesQuery(abilities);
+
   return (
     <Base>
       <Title color={mapColorToHex(color?.name)}>Abilities</Title>
       <List>
-        <ListItem>
-          <Label>Label</Label>
-          <Description>Description</Description>
-        </ListItem>
+        {results.map(
+          ({ data }, idx) =>
+            data && (
+              <ListItem key={idx}>
+                <Label>{data.data.name}</Label>
+                <Description>{data.data.effect_entries[0].effect}</Description>
+              </ListItem>
+            )
+        )}
       </List>
     </Base>
   );

@@ -37,14 +37,12 @@ const TypeWrapper = styled.div<{ color: string }>`
   justify-content: center;
   align-items: center;
   border-radius: 4px;
+  margin-right: 8px;
 `;
 
 const TypeList = styled.div`
   display: flex;
   margin-top: 8px;
-  ${TypeWrapper} + ${TypeWrapper} {
-    margin-left: 8px;
-  }
 `;
 
 const TypeImage = styled.img`
@@ -55,20 +53,6 @@ const TypeLabel = styled.span`
   margin-left: 4px;
   color: #fff;
   font-size: 10px;
-`;
-
-const ImageWrapper = styled.div`
-  width: 100%;
-  height: 160px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
-
-const Image = styled.img`
-  width: 120px;
-  height: 120px;
-  object-fit: contain;
 `;
 
 const InfoContainerWrapper = styled.div`

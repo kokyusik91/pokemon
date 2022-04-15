@@ -54,15 +54,13 @@ const TypeWrapper = styled.div<{ color: string }>`
   display: flex;
   justify-content: center;
   align-items: center;
+  margin-right: 8px;
 `;
 
 const TypeList = styled.div`
   display: flex;
   margin-top: 8px;
   /* TypeWraper간의 간격을 마진 8px를 줌 */
-  ${TypeWrapper} + ${TypeWrapper} {
-    margin-left: 8px;
-  }
 `;
 
 const TypeInfo = styled.img`
@@ -93,11 +91,15 @@ interface Props {
 }
 // 상위 컴포넌트에서 id, name, types, color를 props로 받아온다.
 const PokemonInfo: React.FC<Props> = ({ id, name, types, color }) => {
+  // console.log(id);
+  // console.log(name);
+  console.log(types);
+  // console.log(color);
   return (
     <Base color={mapColorToHex(color?.name)}>
       <ImageWrapper>
         {/* 좌측 상단의 포켓볼 이미지 */}
-        <Image src='/assets/poketball.svg' />
+        <Image src='/assets/pocketball.svg' />
       </ImageWrapper>
       <InfoWrapper>
         <Name>{name}</Name>
@@ -105,12 +107,13 @@ const PokemonInfo: React.FC<Props> = ({ id, name, types, color }) => {
       </InfoWrapper>
       <TypeList>
         {/* types를 prop으로 전달 받아서 map을 돌림 */}
-        {types?.map(({ type }, idx) => (
-          <TypeWrapper key={idx} color={mapTypeToHex(type.name)}>
-            <TypeInfo src={`/assets/${type.name}.svg`} />
+        {types?.map((type, idx) => (
+          <TypeWrapper key={idx} color={mapTypeToHex(type.type.name)}>
+            <TypeInfo src={`/assets/${type.type.name}.svg`} />
           </TypeWrapper>
         ))}
       </TypeList>
+
       <ThumbnailImageWrapper>
         <ThumbnailImage
           // 포켓몬 이미지
