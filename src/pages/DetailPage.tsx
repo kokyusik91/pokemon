@@ -104,6 +104,7 @@ const DetailPage: React.FC = () => {
         />
       )}
       <div onClick={gotoBack}>뒤로가기</div>
+      
 
       {/* selectTab이 stats 일떄 */}
       {selectedTab === 'stats' && (
